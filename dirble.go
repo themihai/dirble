@@ -10,7 +10,7 @@ import (
 )
 
 type Station struct {
-	ID             string `json:"id"`       //e.g. 15
+	ID             int    `json:"id"`       //e.g. 15
 	Name           string `json:"name"`     // Neradio House  Trance
 	Accepted       int    `json:"accepted"` // 1,
 	Country        string `json:"country"`  // "SE",
