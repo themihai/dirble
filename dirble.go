@@ -1,4 +1,4 @@
-package radio
+package dirble
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 type Station struct {
@@ -48,6 +49,20 @@ type Stream struct {
 	ContentType string `json:"content_type"` // "audio/mpeg\r\n",
 	Listeners   int    `json:"listeners"`    // 10,
 	Status      int    `json:"status"`
+}
+
+func StationByID(cx context.Context, token string, stationID int) (*Station, error) {
+	URL := "http://api.dirble.com/v2/station/" + strconv.Itoa(stationID) +
+		"?token=" + token
+	b, err := get(cx, URL)
+	if err != nil {
+		return nil, err
+	}
+	v := new(Station)
+	if err = json.Unmarshal(b, v); err != nil {
+		return nil, fmt.Errorf("err %v, \ndata %s", err, b)
+	}
+	return v, nil
 }
 
 // @limit - How many stations per page to show
